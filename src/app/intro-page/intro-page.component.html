@@ -1,0 +1,38 @@
+<link
+  href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900"
+  rel="stylesheet"
+/>
+<html>
+  <body>
+    <div class="input-box">
+      <h1>Snake Game</h1>
+      <p>
+        Welcome in a snake game
+        <span class="welcome-name">{{ userName }}!</span>
+      </p>
+      <h3>Player name</h3>
+      <input
+        (input)="onInput()"
+        placeholder="Input name"
+        type="text"
+        [(ngModel)]="userName"
+      />
+      <h3>Player email</h3>
+      <input
+        (input)="onInput()"
+        placeholder="Input mail"
+        type="email"
+        [(ngModel)]="userMail"
+      />
+      <p *ngIf="!mailState">Please enter correct mail</p>
+      <br />
+      <button
+        class="start-btn"
+        (click)="addPlayer()"
+        [disabled]="btnState === false"
+      >
+        start game
+      </button>
+    </div>
+  </body>
+</html>

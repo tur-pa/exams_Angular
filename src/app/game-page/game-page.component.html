@@ -1,0 +1,69 @@
+<html>
+  <body class="container">
+    <div class="container-user">
+      <p>{{ displayTime }}</p>
+      <p>{{ points }}</p>
+      <p>{{ userName }}</p>
+      <button (click)="backToIntroPage()">Exit Game</button>
+    </div>
+    <div class="container-game">
+      <ngx-snake
+        #game
+        (foodEaten)="showResult()"
+        (gameOver)="endGame()"
+      ></ngx-snake>
+    </div>
+    <div class="container-controllers">
+      <button
+        class="btn-controller"
+        class="container-controller-1"
+        (click)="game.actionStart()"
+        (click)="getTime()"
+      >
+        Start
+      </button>
+      <button
+        class="btn-controller"
+        class="container-controllers-2"
+        (click)="game.actionStop()"
+      >
+        Stop
+      </button>
+      <button
+        class="btn-controller"
+        class="container-controllers-3"
+        (click)="game.actionReset()"
+      >
+        Reset
+      </button>
+      <button
+        class="btn-controller"
+        class="container-controllers-4"
+        (click)="game.actionUp()"
+      >
+        Up
+      </button>
+      <button
+        class="btn-controller"
+        class="container-controllers-5"
+        (click)="game.actionLeft()"
+      >
+        Left
+      </button>
+      <button
+        class="btn-controller"
+        class="container-controllers-6"
+        (click)="game.actionRight()"
+      >
+        Right
+      </button>
+      <button
+        class="btn-controller"
+        class="container-controllers-7"
+        (click)="game.actionDown()"
+      >
+        Down
+      </button>
+    </div>
+  </body>
+</html>
