@@ -1,10 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Output, EventEmitter } from '@angular/core';
-
-interface UserProp {
-  userName: string;
-  userMail: string;
-}
+import { User } from '../user.model';
 
 @Component({
   selector: 'app-intro-page',
@@ -13,25 +9,29 @@ interface UserProp {
 })
 export class IntroPageComponent implements OnInit {
   @Output() enabledEvent = new EventEmitter<boolean>();
-  @Output() userNameEvent = new EventEmitter<string>();
+  @Output() userEvent = new EventEmitter<User[]>();
   constructor() {}
 
-  users: UserProp[] = [];
+  user: User[] = [];
   userName: string = ``;
   userMail: string = ``;
   enabled: boolean = true;
   btnState: boolean = false;
   mailState: boolean = false;
 
-  public addPlayer(): void {
-    this.users.push({ userName: this.userName, userMail: this.userMail });
-    this.userNameEvent.emit(this.userName);
+  addPlayer(): void {
+    this.user.push({
+      userName: this.userName,
+      userMail: this.userMail,
+      userPoints: 0,
+    });
+    this.userEvent.emit(this.user);
 
     this.enabled = !this.enabled;
     this.enabledEvent.emit(this.enabled);
   }
 
-  public onInput(): void {
+  onInput(): void {
     if (
       this.userName !== `` &&
       this.userMail !== `` &&
@@ -47,12 +47,12 @@ export class IntroPageComponent implements OnInit {
     } else {
       this.mailState = false;
     }
-
-    console.log(this.btnState);
   }
 
-  ngOnInit(): void {
-    console.log(this.userName);
-    console.log(this.userMail);
+  @HostListener(`keydown.enter`, [`$event`])
+  onEnterPress(event: KeyboardEvent) {
+    this.addPlayer();
   }
+
+  ngOnInit(): void {}
 }

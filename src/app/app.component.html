@@ -1,12 +1,13 @@
 <!-- <app-intro-page></app-intro-page> -->
-<!-- <app-intro-page
+<app-intro-page
   (enabledEvent)="getEnabled($event)"
-  (userNameEvent)="getUserName($event)"
+  (userEvent)="getUser($event)"
   *ngIf="enabled"
-></app-intro-page> -->
+></app-intro-page>
 <app-game-page
+  *ngIf="!enabled"
   (enabledEvent)="getEnabled($event)"
-  [userName]="userName"
+  (pointsEvent)="getPoints($event)"
+  [user]="user"
+  [pointsResult]="resultsArray"
 ></app-game-page>
-
-<!-- *ngIf="!enabled" -->
