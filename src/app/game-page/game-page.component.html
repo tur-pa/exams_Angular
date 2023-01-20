@@ -3,9 +3,21 @@
     <div class="container-user">
       <p>{{ displayTime }}</p>
       <p>{{ points }}</p>
-      <li *ngFor="let result of pointsResult; let i = index">
-        {{ result.userPoints }}
-      </li>
+      <div>
+        <button (click)="changeDirection()">desc</button>
+        <table>
+          <tr>
+            <td>Number</td>
+            <td>Login</td>
+            <td>Points</td>
+          </tr>
+          <tr *ngFor="let result of pointsResult | sortBy : dir; let i = index">
+            <td>{{ i }}</td>
+            <td>{{ result.userName }}</td>
+            <td>{{ result.userPoints }}</td>
+          </tr>
+        </table>
+      </div>
       <button (click)="backToIntroPage()">Exit Game</button>
     </div>
     <div class="container-game">
@@ -21,7 +33,7 @@
         class="container-controller-1"
         (click)="game.actionStart()"
         (click)="getTime()"
-        (click)="handleClick($event)"
+        (click)="handleClickHistory($event)"
       >
         Start
       </button>
@@ -29,7 +41,8 @@
         class="btn-controller"
         class="container-controllers-2"
         (click)="game.actionStop()"
-        (click)="handleClick($event)"
+        (click)="getTime()"
+        (click)="handleClickHistory($event)"
       >
         Stop
       </button>
@@ -37,7 +50,7 @@
         class="btn-controller"
         class="container-controllers-3"
         (click)="game.actionReset()"
-        (click)="handleClick($event)"
+        (click)="endGame()"
       >
         Reset
       </button>
@@ -45,7 +58,7 @@
         class="btn-controller"
         class="container-controllers-4"
         (click)="game.actionUp()"
-        (click)="handleClick($event)"
+        (click)="handleClickHistory($event)"
       >
         Up
       </button>
@@ -53,7 +66,7 @@
         class="btn-controller"
         class="container-controllers-5"
         (click)="game.actionLeft()"
-        (click)="handleClick($event)"
+        (click)="handleClickHistory($event)"
       >
         Left
       </button>
@@ -61,7 +74,7 @@
         class="btn-controller"
         class="container-controllers-6"
         (click)="game.actionRight()"
-        (click)="handleClick($event)"
+        (click)="handleClickHistory($event)"
       >
         Right
       </button>
@@ -69,10 +82,24 @@
         class="btn-controller"
         class="container-controllers-7"
         (click)="game.actionDown()"
-        (click)="handleClick($event)"
+        (click)="handleClickHistory($event)"
       >
         Down
       </button>
+    </div>
+    <div class="container-movement">
+      <div>
+        <table>
+          <tr>
+            <td>Time</td>
+            <td>Movement</td>
+          </tr>
+          <tr *ngFor="let result of movementHistory">
+            <td>{{ result.time }}</td>
+            <td>{{ result.movement }}</td>
+          </tr>
+        </table>
+      </div>
     </div>
   </body>
 </html>

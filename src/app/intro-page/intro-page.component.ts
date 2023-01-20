@@ -50,7 +50,7 @@ export class IntroPageComponent implements OnInit {
   }
 
   @HostListener(`keydown.enter`, [`$event`])
-  onEnterPress(event: KeyboardEvent) {
+  onEnterPress() {
     this.addPlayer();
   }
 

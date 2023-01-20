@@ -15,25 +15,36 @@ export class GamePageComponent implements OnInit {
   @Input() user: User[] = [];
   @Input() pointsResult: User[] = [];
 
-  @Input() Game!: NgxSnakeComponent;
+  @ViewChild(NgxSnakeComponent)
+  public Game!: NgxSnakeComponent;
 
   constructor() {}
 
   ngOnInit(): void {}
 
   time: number = 0;
+  timeRunning: boolean = false;
   displayTime: string = '';
   enabled: boolean = true;
   points: number = 0;
   interval: any;
-  gameHistory: movemenetHistory[] = [];
+  movementHistory: movemenetHistory[] = [];
+  dir: string = ``;
+
+  changeDirection(): void {
+    this.dir = `desc`;
+  }
 
   getTime(): void {
-    this.time = 0;
-    this.interval = setInterval(() => {
-      this.time++;
-      this.displayTime = this.transform(this.time);
-    }, 1000);
+    this.timeRunning = !this.timeRunning;
+    if (this.timeRunning) {
+      this.interval = setInterval(() => {
+        this.time++;
+        this.displayTime = this.transform(this.time);
+      }, 1000);
+    } else {
+      clearInterval(this.interval);
+    }
   }
 
   transform(value: number): string {
@@ -45,12 +56,12 @@ export class GamePageComponent implements OnInit {
     }
   }
 
-  handleClick(event: any): void {
-    this.gameHistory.push({
+  handleClickHistory(event: any): void {
+    this.movementHistory.push({
       movement: event.target.innerText,
       time: this.transform(this.time),
     });
-    console.log(this.gameHistory);
+    console.log(this.movementHistory);
   }
 
   showResult(): void {
@@ -63,6 +74,8 @@ export class GamePageComponent implements OnInit {
     this.pointsEvent.emit(this.user); // SEND DO PARENT
     this.user = this.user.map((newArray) => ({ ...newArray })); // CREATE NEW ARRAY DUE TO IT CONNECT POINTS TO ONE PERSON
     this.points = 0; // RESET POINTS
+    this.time = 0; // RESET POINTS
+    this.movementHistory.length = 0; // RESET MOVEMENT HISTORY
     console.log(`Game over!`);
   }
 
@@ -71,14 +84,35 @@ export class GamePageComponent implements OnInit {
     this.enabledEvent.emit(this.enabled);
   }
 
+  // HOTKEYS //
   @HostListener(`keydown.ArrowUp`, [`$event`])
-  onArrowUpPress(event: KeyboardEvent) {
-    this.Game.actionStart;
+  onUpPress(event: KeyboardEvent) {
+    this.Game.actionUp();
+  }
+
+  @HostListener(`keydown.ArrowDown`, [`$event`])
+  onDownPress(event: KeyboardEvent) {
+    this.Game.actionDown();
+  }
+
+  @HostListener(`keydown.ArrowLeft`, [`$event`])
+  onLeftPress(event: KeyboardEvent) {
+    this.Game.actionLeft();
+  }
+
+  @HostListener(`keydown.ArrowRight`, [`$event`])
+  onRightPress(event: KeyboardEvent) {
+    this.Game.actionRight();
+  }
+
+  @HostListener(`keydown.Enter`, [`$event`])
+  onEnterPress(event: KeyboardEvent) {
+    console.log(`est`);
+    this.Game.actionStart();
+  }
+
+  @HostListener(`keydown.Esc`, [`$event`])
+  onEscPress(event: KeyboardEvent) {
+    this.backToIntroPage();
   }
 }
-
-// @HostListener(`keydown.ArrowUp`, [`$event`])
-// onArrowUpPress(event: KeyboardEvent) {
-//   this.Game!.actionUp();
-//   return false;
-// }
