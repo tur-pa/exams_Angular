@@ -11,9 +11,9 @@ import { NgxSnakeComponent } from 'ngx-snake';
 })
 export class GamePageComponent implements OnInit {
   @Output() enabledEvent = new EventEmitter<boolean>();
-  @Output() pointsEvent = new EventEmitter<User[]>();
+  @Output() sendUserPointsEvent = new EventEmitter<User[]>();
   @Input() user: User[] = [];
-  @Input() pointsResult: User[] = [];
+  @Input() usersReults: User[] = [];
 
   @ViewChild(NgxSnakeComponent)
   public Game!: NgxSnakeComponent;
@@ -24,30 +24,32 @@ export class GamePageComponent implements OnInit {
 
   time: number = 0;
   timeRunning: boolean = false;
-  displayTime: string = '';
+  displayTime: string = '0';
   enabled: boolean = true;
   points: number = 0;
   interval: any;
   movementHistory: movemenetHistory[] = [];
-  dir: string = ``;
+  dirSortScore: string = ``;
+  dirSortTime: string = ``;
+  moveType: string = `ALL`;
 
-  changeDirection(): void {
-    this.dir = `desc`;
+  changeSortDirectionScore(event: any): void {
+    this.dirSortScore = event.target.name;
   }
 
   getTime(): void {
-    this.timeRunning = !this.timeRunning;
+    this.timeRunning = !this.timeRunning; //HANDLE STOP/START EVENT
     if (this.timeRunning) {
       this.interval = setInterval(() => {
         this.time++;
-        this.displayTime = this.transform(this.time);
+        this.displayTime = this.transformTime(this.time);
       }, 1000);
     } else {
       clearInterval(this.interval);
     }
   }
 
-  transform(value: number): string {
+  transformTime(value: number): string {
     const minutes: number = Math.floor(value / 60);
     if (minutes <= 9) {
       return '0' + minutes + ':' + (value - minutes * 60);
@@ -59,9 +61,16 @@ export class GamePageComponent implements OnInit {
   handleClickHistory(event: any): void {
     this.movementHistory.push({
       movement: event.target.innerText,
-      time: this.transform(this.time),
+      time: this.transformTime(this.time),
     });
     console.log(this.movementHistory);
+  }
+
+  handleClickHistoryFromHotkey(event: string): void {
+    this.movementHistory.push({
+      movement: event,
+      time: this.transformTime(this.time),
+    });
   }
 
   showResult(): void {
@@ -70,13 +79,16 @@ export class GamePageComponent implements OnInit {
 
   endGame(): void {
     clearInterval(this.interval); // STOP TIMER
-    this.user[0].userPoints = this.points; // SET POINTS
-    this.pointsEvent.emit(this.user); // SEND DO PARENT
+    this.user[0].userPoints = this.points; // SET POINTS FOR CURR USER
+    this.sendUserPointsEvent.emit(this.user); // SEND USER DO PARENT
+    alert(`Game over!`);
+  }
+
+  resetGame(): void {
     this.user = this.user.map((newArray) => ({ ...newArray })); // CREATE NEW ARRAY DUE TO IT CONNECT POINTS TO ONE PERSON
     this.points = 0; // RESET POINTS
     this.time = 0; // RESET POINTS
     this.movementHistory.length = 0; // RESET MOVEMENT HISTORY
-    console.log(`Game over!`);
   }
 
   backToIntroPage(): void {
@@ -85,30 +97,35 @@ export class GamePageComponent implements OnInit {
   }
 
   // HOTKEYS //
+
   @HostListener(`keydown.ArrowUp`, [`$event`])
   onUpPress(event: KeyboardEvent) {
     this.Game.actionUp();
+    this.handleClickHistoryFromHotkey(`UP`);
   }
 
   @HostListener(`keydown.ArrowDown`, [`$event`])
   onDownPress(event: KeyboardEvent) {
     this.Game.actionDown();
+    this.handleClickHistoryFromHotkey(`DOWN`);
   }
 
   @HostListener(`keydown.ArrowLeft`, [`$event`])
   onLeftPress(event: KeyboardEvent) {
     this.Game.actionLeft();
+    this.handleClickHistoryFromHotkey(`LEFT`);
   }
 
   @HostListener(`keydown.ArrowRight`, [`$event`])
   onRightPress(event: KeyboardEvent) {
     this.Game.actionRight();
+    this.handleClickHistoryFromHotkey(`RIGHT`);
   }
 
   @HostListener(`keydown.Enter`, [`$event`])
   onEnterPress(event: KeyboardEvent) {
-    console.log(`est`);
     this.Game.actionStart();
+    this.handleClickHistoryFromHotkey(`START`);
   }
 
   @HostListener(`keydown.Esc`, [`$event`])

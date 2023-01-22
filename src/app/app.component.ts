@@ -10,7 +10,7 @@ export class AppComponent {
   title = 'snake-app';
   enabled: boolean = true;
   user: User[] = [];
-  resultsArray: User[] = [];
+  usersReults: User[] = [];
 
   getEnabled(enabled: boolean) {
     this.enabled = enabled;
@@ -20,8 +20,7 @@ export class AppComponent {
     this.user = user;
   }
 
-  getPoints(user: User[]) {
-    this.resultsArray.push(...user);
-    console.log(this.resultsArray);
+  savePoints(user: User[]) {
+    this.usersReults.push(...user);
   }
 }

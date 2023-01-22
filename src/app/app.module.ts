@@ -6,10 +6,19 @@ import { AppComponent } from './app.component';
 import { NgxSnakeModule } from 'ngx-snake';
 import { IntroPageComponent } from './intro-page/intro-page.component';
 import { GamePageComponent } from './game-page/game-page.component';
-import { SortPipe } from './sort.pipe';
+import { SortScoresPipe } from './sortScores.pipe';
+import { SortMovementPipe } from './sort-movement.pipe';
+import { FilterMovementPipe } from './filter-movement.pipe';
 
 @NgModule({
-  declarations: [AppComponent, IntroPageComponent, GamePageComponent, SortPipe],
+  declarations: [
+    AppComponent,
+    IntroPageComponent,
+    GamePageComponent,
+    SortScoresPipe,
+    SortMovementPipe,
+    FilterMovementPipe,
+  ],
   imports: [BrowserModule, NgxSnakeModule, FormsModule],
   providers: [],
   bootstrap: [AppComponent],

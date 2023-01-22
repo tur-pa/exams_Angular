@@ -30,6 +30,8 @@
         class="start-btn"
         (click)="addPlayer()"
         [disabled]="btnState === false"
+        [class.start-btn-blue]="!btnState"
+        [class.start-btn-green]="btnState"
       >
         start game
       </button>

@@ -25,7 +25,7 @@ export class IntroPageComponent implements OnInit {
       userMail: this.userMail,
       userPoints: 0,
     });
-    this.userEvent.emit(this.user);
+    this.userEvent.emit(this.user); //SEND USER TO PARENT
 
     this.enabled = !this.enabled;
     this.enabledEvent.emit(this.enabled);

@@ -6,7 +6,7 @@
 <app-game-page
   *ngIf="!enabled"
   (enabledEvent)="getEnabled($event)"
-  (pointsEvent)="getPoints($event)"
+  (sendUserPointsEvent)="savePoints($event)"
   [user]="user"
-  [pointsResult]="resultsArray"
+  [usersReults]="usersReults"
 ></app-game-page>
