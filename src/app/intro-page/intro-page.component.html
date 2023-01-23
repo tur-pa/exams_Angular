@@ -8,33 +8,45 @@
       <h1>Snake Game</h1>
       <p>
         Welcome in a snake game
-        <span class="welcome-name">{{ userName }}!</span>
+        <span class="welcome-name">{{ userNameModel.value }}!</span>
       </p>
-      <h3>Player name</h3>
-      <input
-        (input)="onInput()"
-        placeholder="Input name"
-        type="text"
-        [(ngModel)]="userName"
-      />
-      <h3>Player email</h3>
-      <input
-        (input)="onInput()"
-        placeholder="Input mail"
-        type="email"
-        [(ngModel)]="userMail"
-      />
-      <p *ngIf="!mailState">Please enter correct mail</p>
-      <br />
-      <button
-        class="start-btn"
-        (click)="addPlayer()"
-        [disabled]="btnState === false"
-        [class.start-btn-blue]="!btnState"
-        [class.start-btn-green]="btnState"
-      >
-        start game
-      </button>
+      <form #userForm="ngForm" (submit)="addPlayer(userForm.form)">
+        <h3>Player name</h3>
+        <input
+          type="text"
+          name="userName"
+          #userNameModel="ngModel"
+          ngModel
+          placeholder="Input name"
+          required
+        />
+        <p *ngIf="userNameModel.invalid">This field is required!</p>
+        <h3>Player email</h3>
+        <input
+          pattern="^[a-zA-Z0-9]+@[a-zA-Z0-9]+.[a-zA-Z0-9]+$"
+          type="email"
+          name="userMail"
+          #userMailModel="ngModel"
+          ngModel
+          placeholder="Input mail"
+          required
+        />
+        <p *ngIf="userMailModel.invalid">Please enter correct mail</p>
+        <br />
+        <button
+          class="start-btn"
+          [class.start-btn-blue]="userForm.invalid"
+          [class.start-btn-green]="userForm.valid"
+          [disabled]="!userForm.valid"
+        >
+          start game
+        </button>
+      </form>
     </div>
   </body>
 </html>
+
+<!-- class="start-btn" -->
+<!-- (click)="addPlayer()" -->
+<!-- [class.start-btn-blue]="!btnState"
+        [class.start-btn-green]="btnState" -->

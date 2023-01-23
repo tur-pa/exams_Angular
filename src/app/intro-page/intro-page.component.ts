@@ -1,5 +1,6 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { Output, EventEmitter } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { User } from '../user.model';
 
 @Component({
@@ -19,39 +20,17 @@ export class IntroPageComponent implements OnInit {
   btnState: boolean = false;
   mailState: boolean = false;
 
-  addPlayer(): void {
+  addPlayer(form: FormGroup): void {
     this.user.push({
-      userName: this.userName,
-      userMail: this.userMail,
+      userName: form.value.userName,
+      userMail: form.value.userMail,
       userPoints: 0,
     });
     this.userEvent.emit(this.user); //SEND USER TO PARENT
 
     this.enabled = !this.enabled;
+    console.log(this.enabled);
     this.enabledEvent.emit(this.enabled);
-  }
-
-  onInput(): void {
-    if (
-      this.userName !== `` &&
-      this.userMail !== `` &&
-      this.mailState === true
-    ) {
-      this.btnState = true;
-    } else {
-      this.btnState = false;
-    }
-
-    if (this.userMail.includes(`@`) && this.userMail.includes(`.`)) {
-      this.mailState = true;
-    } else {
-      this.mailState = false;
-    }
-  }
-
-  @HostListener(`keydown.enter`, [`$event`])
-  onEnterPress() {
-    this.addPlayer();
   }
 
   ngOnInit(): void {}
