@@ -92,7 +92,6 @@ export class GamePageComponent implements OnInit {
   }
 
   backToIntroPage(): void {
-    this.enabled = !this.enabled;
     this.enabledEvent.emit(this.enabled);
   }
 
