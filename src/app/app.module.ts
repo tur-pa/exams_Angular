@@ -9,6 +9,7 @@ import { GamePageComponent } from './game-page/game-page.component';
 import { SortScoresPipe } from './sortScores.pipe';
 import { SortMovementPipe } from './sort-movement.pipe';
 import { FilterMovementPipe } from './filter-movement.pipe';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,19 @@ import { FilterMovementPipe } from './filter-movement.pipe';
     SortMovementPipe,
     FilterMovementPipe,
   ],
-  imports: [BrowserModule, NgxSnakeModule, FormsModule],
+  imports: [
+    BrowserModule,
+    NgxSnakeModule,
+    FormsModule,
+    RouterModule.forRoot([
+      { path: 'intro', component: IntroPageComponent },
+      {
+        path: 'game',
+        component: GamePageComponent,
+      },
+      { path: '**', redirectTo: 'intro' },
+    ]),
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })

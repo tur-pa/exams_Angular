@@ -4,11 +4,15 @@
 />
 
 <html>
+  {{
+    getCurrUser()
+  }}
   <body class="container">
     <div class="container-user">
       <p>
         Have fun
-        <span style="font-weight: bold">{{ this.user[0].userName }}</span> !
+        <span style="font-weight: bold">{{ currUser.userName }}</span>
+        !
       </p>
       <div class="container-user-information">
         <p>
@@ -17,7 +21,8 @@
           min
         </p>
         <p>
-          Your points: <span style="font-weight: bold">{{ points }}</span>
+          Your points:
+          <span style="font-weight: bold">{{ points }}</span>
         </p>
       </div>
       <div class="container-user-results">
@@ -51,13 +56,15 @@
             </tr>
             <tr
               *ngFor="
-                let result of usersReults | sortByScores : dirSortScore;
+                let currUser of allUsers | sortByScores : dirSortScore;
                 let i = index
               "
             >
               <td class="table-movement-td">{{ i + 1 }}</td>
-              <td class="table-movement-td">{{ result.userName }}</td>
-              <td class="table-movement-td">{{ result.userPoints }}</td>
+              <td class="table-movement-td">
+                {{ currUser.userName }}
+              </td>
+              <td class="table-movement-td">{{ currUser.userPoints }}</td>
             </tr>
           </table>
         </div>
@@ -67,7 +74,7 @@
     <div class="container-game">
       <ngx-snake
         #game
-        (foodEaten)="showResult()"
+        (foodEaten)="calculatePoints()"
         (gameOver)="endGame()"
       ></ngx-snake>
     </div>
@@ -77,6 +84,7 @@
         (click)="game.actionStart()"
         (click)="getTime()"
         (click)="handleClickHistory($event)"
+        (click)="getCurrUser()"
       >
         Start
       </button>

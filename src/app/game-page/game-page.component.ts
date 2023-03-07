@@ -3,6 +3,9 @@ import { Input, Output, EventEmitter } from '@angular/core';
 import { User } from '../user.model';
 import { movemenetHistory } from '../movemenet-history.module';
 import { NgxSnakeComponent } from 'ngx-snake';
+import { Router } from '@angular/router';
+import { UserInfoService } from '../user-info.service';
+import { GameControlService } from '../game-control.service';
 
 @Component({
   selector: 'app-game-page',
@@ -10,25 +13,34 @@ import { NgxSnakeComponent } from 'ngx-snake';
   styleUrls: ['./game-page.component.scss'],
 })
 export class GamePageComponent implements OnInit {
-  @Output() enabledEvent = new EventEmitter<boolean>();
-  @Output() sendUserPointsEvent = new EventEmitter<User[]>();
-  @Input() user: User[] = [];
-  @Input() usersReults: User[] = [];
-
   @ViewChild(NgxSnakeComponent)
   public Game!: NgxSnakeComponent;
 
-  constructor() {}
+  constructor(
+    private _router: Router,
+    private _userInfo: UserInfoService,
+    private _gameControl: GameControlService
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this._gameControl.redirectionChecker(); // ROUTE GUARD
+  }
 
   time: number = 0;
   timeRunning: boolean = false;
   displayTime: string = '0';
-  enabled: boolean = true;
-  points: number = 0;
   interval: any;
+
+  allUsers: User[] = this._userInfo.getUsersData();
+  currUser: User = {
+    userName: '',
+    userMail: '',
+    userPoints: 0,
+  };
+
+  points: number = 0;
   movementHistory: movemenetHistory[] = [];
+
   dirSortScore: string = ``;
   dirSortTime: string = ``;
   moveType: string = `ALL`;
@@ -38,7 +50,7 @@ export class GamePageComponent implements OnInit {
   }
 
   getTime(): void {
-    this.timeRunning = !this.timeRunning; //HANDLE STOP/START EVENT
+    this.timeRunning = !this.timeRunning; // HANDLE STOP/START EVENT
     if (this.timeRunning) {
       this.interval = setInterval(() => {
         this.time++;
@@ -63,7 +75,6 @@ export class GamePageComponent implements OnInit {
       movement: event.target.innerText,
       time: this.transformTime(this.time),
     });
-    console.log(this.movementHistory);
   }
 
   handleClickHistoryFromHotkey(event: string): void {
@@ -73,26 +84,37 @@ export class GamePageComponent implements OnInit {
     });
   }
 
-  showResult(): void {
+  calculatePoints(): void {
     this.points++;
+  }
+
+  getCurrUser(): void {
+    this.currUser = this.allUsers[this.allUsers.length - 1];
+  }
+
+  createCopyUser(): void {
+    this.allUsers.push({
+      userName: this.currUser.userName,
+      userMail: this.currUser.userMail,
+      userPoints: 0,
+    });
   }
 
   endGame(): void {
     clearInterval(this.interval); // STOP TIMER
-    this.user[0].userPoints = this.points; // SET POINTS FOR CURR USER
-    this.sendUserPointsEvent.emit(this.user); // SEND USER DO PARENT
+    this.currUser.userPoints = this.points; // SET POINTS FOR CURR USER
     alert(`Game over!`);
   }
 
   resetGame(): void {
-    this.user = this.user.map((newArray) => ({ ...newArray })); // CREATE NEW ARRAY DUE TO IT CONNECT POINTS TO ONE PERSON
     this.points = 0; // RESET POINTS
-    this.time = 0; // RESET POINTS
+    this.time = 0; // RESET TIMER
     this.movementHistory.length = 0; // RESET MOVEMENT HISTORY
+    this.createCopyUser(); // FOR ANOTHER GAME BY SAME PLAYER
   }
 
   backToIntroPage(): void {
-    this.enabledEvent.emit(this.enabled);
+    this._router.navigate(['/intro']); // NAVIGATOR
   }
 
   // HOTKEYS //

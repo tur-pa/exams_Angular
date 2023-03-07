@@ -1,12 +1,1 @@
-<app-intro-page
-  (enabledEvent)="getEnabled($event)"
-  (userEvent)="getUser($event)"
-  *ngIf="enabled"
-></app-intro-page>
-<app-game-page
-  *ngIf="!enabled"
-  (enabledEvent)="getEnabled($event)"
-  (sendUserPointsEvent)="savePoints($event)"
-  [user]="user"
-  [usersReults]="usersReults"
-></app-game-page>
+<router-outlet></router-outlet>

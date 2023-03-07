@@ -2,6 +2,9 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { User } from '../user.model';
+import { Router } from '@angular/router';
+import { UserInfoService } from '../user-info.service';
+import { GameControlService } from '../game-control.service';
 
 @Component({
   selector: 'app-intro-page',
@@ -9,28 +12,27 @@ import { User } from '../user.model';
   styleUrls: ['./intro-page.component.scss'],
 })
 export class IntroPageComponent implements OnInit {
-  @Output() enabledEvent = new EventEmitter<boolean>();
-  @Output() userEvent = new EventEmitter<User[]>();
-  constructor() {}
+  constructor(
+    private _router: Router,
+    private _userInfo: UserInfoService,
+    private _gameControl: GameControlService
+  ) {}
 
-  user: User[] = [];
-  userName: string = ``;
-  userMail: string = ``;
-  enabled: boolean = true;
-  btnState: boolean = false;
-  mailState: boolean = false;
+  user: User = {
+    userName: '',
+    userMail: '',
+    userPoints: 0,
+  };
 
   addPlayer(form: FormGroup): void {
-    this.user.push({
+    this.user = {
       userName: form.value.userName,
       userMail: form.value.userMail,
       userPoints: 0,
-    });
-    this.userEvent.emit(this.user); //SEND USER TO PARENT
-
-    this.enabled = !this.enabled;
-    console.log(this.enabled);
-    this.enabledEvent.emit(this.enabled);
+    };
+    this._userInfo.createPlayer(this.user); // SEND USER TO SERVICE
+    this._gameControl.validPassKey(); // ROUTE GUARD
+    this._router.navigate(['/game']); // NAVIGATOR
   }
 
   ngOnInit(): void {}
