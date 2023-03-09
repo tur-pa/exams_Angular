@@ -6,42 +6,10 @@
   <body>
     <div class="input-box">
       <h1>Snake Game</h1>
-      <p>
-        Welcome in a snake game
-        <span class="welcome-name">{{ userNameModel.value }}!</span>
-      </p>
-      <form #userForm="ngForm" (submit)="addPlayer(userForm.form)">
-        <h3>Player name</h3>
-        <input
-          type="text"
-          name="userName"
-          #userNameModel="ngModel"
-          ngModel
-          placeholder="Input name"
-          required
-        />
-        <p *ngIf="userNameModel.invalid">This field is required!</p>
-        <h3>Player email</h3>
-        <input
-          pattern="^[a-zA-Z0-9]+@[a-zA-Z0-9]+.[a-zA-Z0-9]+$"
-          type="email"
-          name="userMail"
-          #userMailModel="ngModel"
-          ngModel
-          placeholder="Input mail"
-          required
-        />
-        <p *ngIf="userMailModel.invalid">Please enter correct mail</p>
-        <br />
-        <button
-          class="start-btn"
-          [class.start-btn-blue]="userForm.invalid"
-          [class.start-btn-green]="userForm.valid"
-          [disabled]="!userForm.valid"
-        >
-          start game
-        </button>
-      </form>
+      <p>Welcome in a snake game</p>
+      <app-intro-page-input-comp
+        (newUser)="newUserToParent($event)"
+      ></app-intro-page-input-comp>
     </div>
   </body>
 </html>

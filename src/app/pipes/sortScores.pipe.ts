@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import * as _ from 'lodash';
-import { User } from './user.model';
+import { User } from '../modules/user.model';
 
 @Pipe({
   name: 'sortByScores',

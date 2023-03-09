@@ -1,0 +1,43 @@
+<p>Game History</p>
+<div class="container-movement-sort">
+  <p>Sort movements</p>
+  <div class="center-button">
+    <select class="btn-select" [(ngModel)]="dirSortTime">
+      <option value="asc">asc</option>
+      <option value="desc">desc</option>
+    </select>
+  </div>
+
+  <p>Filter movements</p>
+  <div class="center-button">
+    <select class="btn-select" [(ngModel)]="moveType">
+      <option value="ALL">all</option>
+      <option value="START">start</option>
+      <option value="STOP">stop</option>
+      <option value="UP">up</option>
+      <option value="DOWN">down</option>
+      <option value="LEFT">left</option>
+      <option value="RIGHT">right</option>
+    </select>
+  </div>
+</div>
+
+<div class="table">
+  <table class="table-movement">
+    <tr class="table-movement-tr">
+      <th class="table-movement-th">Time</th>
+      <th class="table-movement-th">Movement</th>
+    </tr>
+    <tr
+      *ngFor="
+        let movement of movementHistory
+          | sortByMovement : dirSortTime
+          | filterMovement : moveType
+      "
+      class="table-movement-tr-results"
+    >
+      <td class="table-movement-td">{{ movement.time }}</td>
+      <td class="table-movement-td">{{ movement.movement }}</td>
+    </tr>
+  </table>
+</div>

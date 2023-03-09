@@ -4,70 +4,19 @@
 />
 
 <html>
-  {{
-    getCurrUser()
-  }}
   <body class="container">
     <div class="container-user">
-      <p>
-        Have fun
-        <span style="font-weight: bold">{{ currUser.userName }}</span>
-        !
-      </p>
-      <div class="container-user-information">
-        <p>
-          Time in the game:
-          <span style="font-weight: bold">{{ displayTime }}</span>
-          min
-        </p>
-        <p>
-          Your points:
-          <span style="font-weight: bold">{{ points }}</span>
-        </p>
-      </div>
-      <div class="container-user-results">
-        <div class="container-user-button-pipes">
-          <p>Sort scores:</p>
-          <button
-            class="btn-controller"
-            name="desc"
-            (click)="changeSortDirectionScore($event)"
-          >
-            desc
-          </button>
-          <button
-            class="btn-controller"
-            name="asc"
-            (click)="changeSortDirectionScore($event)"
-          >
-            asc
-          </button>
-          <button class="btn-controller" (click)="backToIntroPage()">
-            Exit Game
-          </button>
-        </div>
+      <app-game-status
+        [points]="points"
+        [displayTime]="displayTime"
+        [currUser]="currUser"
+      ></app-game-status>
 
-        <div class="table">
-          <table class="table-movement">
-            <tr class="table-movement-tr">
-              <th class="table-movement-th">Number</th>
-              <th class="table-movement-th">Login</th>
-              <th class="table-movement-th">Points</th>
-            </tr>
-            <tr
-              *ngFor="
-                let currUser of allUsers | sortByScores : dirSortScore;
-                let i = index
-              "
-            >
-              <td class="table-movement-td">{{ i + 1 }}</td>
-              <td class="table-movement-td">
-                {{ currUser.userName }}
-              </td>
-              <td class="table-movement-td">{{ currUser.userPoints }}</td>
-            </tr>
-          </table>
-        </div>
+      <div class="container-user-results">
+        <app-score-history
+          [currUser]="currUser"
+          [allUsers]="allUsers"
+        ></app-score-history>
       </div>
     </div>
 
@@ -78,105 +27,36 @@
         (gameOver)="endGame()"
       ></ngx-snake>
     </div>
-    <div class="container-controllers">
-      <button
-        class="btn-controller container-controller-1"
-        (click)="game.actionStart()"
-        (click)="getTime()"
-        (click)="handleClickHistory($event)"
-        (click)="getCurrUser()"
-      >
-        Start
-      </button>
-      <button
-        class="btn-controller container-controllers-2"
-        (click)="game.actionStop()"
-        (click)="getTime()"
-        (click)="handleClickHistory($event)"
-      >
-        Stop
-      </button>
-      <button
-        class="btn-controller container-controllers-3"
-        (click)="game.actionReset()"
-        (click)="resetGame()"
-      >
-        Reset
-      </button>
-      <button
-        class="btn-controller container-controllers-4"
-        (click)="game.actionUp()"
-        (click)="handleClickHistory($event)"
-      >
-        Up
-      </button>
-      <button
-        class="btn-controller container-controllers-5"
-        (click)="game.actionLeft()"
-        (click)="handleClickHistory($event)"
-      >
-        Left
-      </button>
-      <button
-        class="btn-controller container-controllers-6"
-        (click)="game.actionRight()"
-        (click)="handleClickHistory($event)"
-      >
-        Right
-      </button>
-      <button
-        class="btn-controller container-controllers-7"
-        (click)="game.actionDown()"
-        (click)="handleClickHistory($event)"
-      >
-        Down
-      </button>
+
+    <div>
+      <app-controller
+        (actionStart)="
+          game.actionStart();
+          startTime();
+          getTime();
+          getCurrUser();
+          handleClickHistory('start')
+        "
+        (actionStop)="
+          game.actionStop(); stopTime(); getTime(); handleClickHistory('stop')
+        "
+        (actionReset)="
+          game.actionReset();
+          stopTime();
+          resetGame();
+          getTime();
+          handleClickHistory('reset')
+        "
+        (actionUp)="game.actionUp(); handleClickHistory('up')"
+        (actionDown)="game.actionDown(); handleClickHistory('down')"
+        (actionLeft)="game.actionLeft(); handleClickHistory('left')"
+        (actionRight)="game.actionRight(); handleClickHistory('right')"
+      ></app-controller>
     </div>
-
     <div class="container-movement">
-      <p>Game History</p>
-      <div class="container-movement-sort">
-        <p>Sort movements</p>
-        <div class="center-button">
-          <select class="btn-select" [(ngModel)]="dirSortTime">
-            <option value="asc">asc</option>
-            <option value="desc">desc</option>
-          </select>
-        </div>
-
-        <p>Filter movements</p>
-        <div class="center-button">
-          <select class="btn-select" [(ngModel)]="moveType">
-            <option value="ALL">all</option>
-            <option value="START">start</option>
-            <option value="STOP">stop</option>
-            <option value="UP">up</option>
-            <option value="DOWN">down</option>
-            <option value="LEFT">left</option>
-            <option value="RIGHT">right</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="table">
-        <table class="table-movement">
-          <tr class="table-movement-tr">
-            <th class="table-movement-th">Time</th>
-            <th class="table-movement-th">Movement</th>
-          </tr>
-          <tr
-            *ngFor="
-              let movement of movementHistory
-                | sortByMovement : dirSortTime
-                | filterMovement : moveType
-            "
-            class="table-movement-tr-results"
-          >
-            <td class="table-movement-td">{{ movement.time }}</td>
-            <td class="table-movement-td">{{ movement.movement }}</td>
-          </tr>
-        </table>
-      </div>
+      <app-movement-history
+        [movementHistory]="movementHistory"
+      ></app-movement-history>
     </div>
   </body>
 </html>

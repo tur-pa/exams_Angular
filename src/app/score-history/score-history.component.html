@@ -1,0 +1,39 @@
+<div class="container-user-button-pipes">
+  <p>Sort scores:</p>
+  <button
+    class="btn-controller"
+    name="desc"
+    (click)="changeSortDirectionScore($event)"
+  >
+    desc
+  </button>
+  <button
+    class="btn-controller"
+    name="asc"
+    (click)="changeSortDirectionScore($event)"
+  >
+    asc
+  </button>
+  <button class="btn-controller" (click)="backToIntroPage()">Exit Game</button>
+</div>
+<div class="table">
+  <table class="table-movement">
+    <tr class="table-movement-tr">
+      <th class="table-movement-th">Number</th>
+      <th class="table-movement-th">Login</th>
+      <th class="table-movement-th">Points</th>
+    </tr>
+    <tr
+      *ngFor="
+        let currUser of allUsers | sortByScores : dirSortScore;
+        let i = index
+      "
+    >
+      <td class="table-movement-td">{{ i + 1 }}</td>
+      <td class="table-movement-td">
+        {{ currUser.userName }}
+      </td>
+      <td class="table-movement-td">{{ currUser.userPoints }}</td>
+    </tr>
+  </table>
+</div>

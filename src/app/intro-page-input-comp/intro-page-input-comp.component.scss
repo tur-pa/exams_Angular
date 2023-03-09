@@ -1,0 +1,94 @@
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
+  font-size: 0.8rem;
+  line-height: 2;
+  color: #333;
+  background: linear-gradient(45deg, #67b26f 0%, #4ca2cd 100%);
+
+  box-sizing: border-box;
+  height: 100vh;
+  position: relative;
+}
+
+.start-btn-green {
+  background-color: rgba(103, 178, 111, 0.8);
+  &:active {
+    background-color: rgba(103, 178, 111, 1);
+  }
+}
+
+.start-btn-blue {
+  background-color: rgba(76, 162, 205, 0.8);
+  &:active {
+    background-color: rgba(76, 162, 205, 1);
+  }
+}
+
+.start-btn {
+  &,
+  &:link,
+  &:visited {
+    box-shadow: 4px 4px 12px 0px rgb(58, 124, 156);
+    font-weight: 400;
+    border-radius: 8px;
+    border-width: 0;
+    color: white;
+    text-transform: uppercase;
+    cursor: pointer;
+    display: inline-block;
+    line-height: 20px;
+    list-style: none;
+    margin-top: 10px;
+    padding: 8px 10px;
+    text-align: center;
+    transition: all 200ms;
+    vertical-align: baseline;
+    white-space: nowrap;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    transition: all 250ms;
+  }
+
+  &:hover,
+  &:focus {
+    border-color: rgba(0, 0, 0, 0.15);
+    box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+    color: white;
+  }
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    border-color: rgba(0, 0, 0, 0.15);
+    box-shadow: rgba(0, 0, 0, 0.06) 0 2px 4px;
+    color: white;
+    transform: translateY(0);
+  }
+}
+
+.input-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.welcome-name {
+  font-weight: 700;
+}

@@ -1,11 +1,10 @@
 import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
-import { Input, Output, EventEmitter } from '@angular/core';
-import { User } from '../user.model';
-import { movemenetHistory } from '../movemenet-history.module';
+import { User } from '../modules/user.model';
+import { movemenetHistory } from '../modules/movemenet-history.module';
 import { NgxSnakeComponent } from 'ngx-snake';
 import { Router } from '@angular/router';
-import { UserInfoService } from '../user-info.service';
-import { GameControlService } from '../game-control.service';
+import { UserInfoService } from '../services/user-info.service';
+import { GameControlService } from '../services/game-control.service';
 
 @Component({
   selector: 'app-game-page',
@@ -24,6 +23,7 @@ export class GamePageComponent implements OnInit {
 
   ngOnInit(): void {
     this._gameControl.redirectionChecker(); // ROUTE GUARD
+    this.getCurrUser();
   }
 
   time: number = 0;
@@ -41,16 +41,15 @@ export class GamePageComponent implements OnInit {
   points: number = 0;
   movementHistory: movemenetHistory[] = [];
 
-  dirSortScore: string = ``;
-  dirSortTime: string = ``;
-  moveType: string = `ALL`;
-
-  changeSortDirectionScore(event: any): void {
-    this.dirSortScore = event.target.name;
+  // TIMER
+  stopTime(): void {
+    this.timeRunning = false; // HANDLE STOP/START EVENT
+  }
+  startTime(): void {
+    this.timeRunning = true; // HANDLE STOP/START EVENT
   }
 
   getTime(): void {
-    this.timeRunning = !this.timeRunning; // HANDLE STOP/START EVENT
     if (this.timeRunning) {
       this.interval = setInterval(() => {
         this.time++;
@@ -70,9 +69,11 @@ export class GamePageComponent implements OnInit {
     }
   }
 
-  handleClickHistory(event: any): void {
+  // // // // // // // // //
+
+  handleClickHistory(event: string): void {
     this.movementHistory.push({
-      movement: event.target.innerText,
+      movement: event.toUpperCase(),
       time: this.transformTime(this.time),
     });
   }
@@ -83,6 +84,8 @@ export class GamePageComponent implements OnInit {
       time: this.transformTime(this.time),
     });
   }
+
+  // // // // // // // // //
 
   calculatePoints(): void {
     this.points++;
@@ -110,47 +113,49 @@ export class GamePageComponent implements OnInit {
     this.points = 0; // RESET POINTS
     this.time = 0; // RESET TIMER
     this.movementHistory.length = 0; // RESET MOVEMENT HISTORY
-    this.createCopyUser(); // FOR ANOTHER GAME BY SAME PLAYER
-  }
-
-  backToIntroPage(): void {
-    this._router.navigate(['/intro']); // NAVIGATOR
+    this.createCopyUser(); // COPY FOR ANOTHER GAME BY SAME PLAYER
   }
 
   // HOTKEYS //
 
   @HostListener(`keydown.ArrowUp`, [`$event`])
   onUpPress(event: KeyboardEvent) {
+    event.preventDefault();
     this.Game.actionUp();
     this.handleClickHistoryFromHotkey(`UP`);
   }
 
   @HostListener(`keydown.ArrowDown`, [`$event`])
   onDownPress(event: KeyboardEvent) {
+    event.preventDefault();
     this.Game.actionDown();
     this.handleClickHistoryFromHotkey(`DOWN`);
   }
 
   @HostListener(`keydown.ArrowLeft`, [`$event`])
   onLeftPress(event: KeyboardEvent) {
+    event.preventDefault();
     this.Game.actionLeft();
     this.handleClickHistoryFromHotkey(`LEFT`);
   }
 
   @HostListener(`keydown.ArrowRight`, [`$event`])
   onRightPress(event: KeyboardEvent) {
+    event.preventDefault();
     this.Game.actionRight();
     this.handleClickHistoryFromHotkey(`RIGHT`);
   }
 
   @HostListener(`keydown.Enter`, [`$event`])
   onEnterPress(event: KeyboardEvent) {
+    event.preventDefault();
     this.Game.actionStart();
     this.handleClickHistoryFromHotkey(`START`);
   }
 
   @HostListener(`keydown.Esc`, [`$event`])
   onEscPress(event: KeyboardEvent) {
-    this.backToIntroPage();
+    event.preventDefault();
+    this._router.navigate(['/intro']); // NAVIGATOR
   }
 }
