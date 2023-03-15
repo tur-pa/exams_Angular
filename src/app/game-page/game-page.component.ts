@@ -1,10 +1,12 @@
 import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
-import { User } from '../modules/user.model';
-import { movemenetHistory } from '../modules/movemenet-history.module';
+import { User } from '../models/user.model';
+import { movemenetHistory } from '../models/movemenet-history.model';
 import { NgxSnakeComponent } from 'ngx-snake';
 import { Router } from '@angular/router';
 import { UserInfoService } from '../services/user-info.service';
 import { GameControlService } from '../services/game-control.service';
+import { DataService } from '../services/data.service';
+import { Scores } from '../models/scores.model';
 
 @Component({
   selector: 'app-game-page',
@@ -18,13 +20,16 @@ export class GamePageComponent implements OnInit {
   constructor(
     private _router: Router,
     private _userInfo: UserInfoService,
-    private _gameControl: GameControlService
+    private _gameControl: GameControlService,
+    private _dataService: DataService
   ) {}
 
   ngOnInit(): void {
-    this._gameControl.redirectionChecker(); // ROUTE GUARD
+    this._gameControl.validationChecker(); // ROUTE GUARD
     this.getCurrUser();
   }
+
+  newScore: Scores[] = [];
 
   time: number = 0;
   timeRunning: boolean = false;
@@ -34,7 +39,7 @@ export class GamePageComponent implements OnInit {
   allUsers: User[] = this._userInfo.getUsersData();
   currUser: User = {
     userName: '',
-    userMail: '',
+    userToken: '',
     userPoints: 0,
   };
 
@@ -98,7 +103,7 @@ export class GamePageComponent implements OnInit {
   createCopyUser(): void {
     this.allUsers.push({
       userName: this.currUser.userName,
-      userMail: this.currUser.userMail,
+      userToken: this.currUser.userToken,
       userPoints: 0,
     });
   }
@@ -106,6 +111,18 @@ export class GamePageComponent implements OnInit {
   endGame(): void {
     clearInterval(this.interval); // STOP TIMER
     this.currUser.userPoints = this.points; // SET POINTS FOR CURR USER
+    this._dataService
+      .sendScoreToServer(
+        this.currUser.userName,
+        `snake`,
+        this.currUser.userPoints
+      )
+      .subscribe();
+
+    // UPDATE NEW SCORE
+    this._dataService.getScores().subscribe((dataFromServer) => {
+      this.newScore = dataFromServer;
+    });
     alert(`Game over!`);
   }
 

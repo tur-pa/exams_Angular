@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { User } from '../modules/user.model';
+import { User } from '../models/user.model';
 import { Output, EventEmitter } from '@angular/core';
 
 @Component({
@@ -14,7 +14,7 @@ export class IntroPageInputCompComponent implements OnInit {
 
   user: User = {
     userName: '',
-    userMail: '',
+    userToken: '',
     userPoints: 0,
   };
 
@@ -23,7 +23,7 @@ export class IntroPageInputCompComponent implements OnInit {
   addPlayer(form: FormGroup): void {
     this.user = {
       userName: form.value.userName,
-      userMail: form.value.userMail,
+      userToken: form.value.userToken,
       userPoints: 0,
     };
     this.newUser.emit(this.user);

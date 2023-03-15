@@ -14,7 +14,10 @@
   >
     asc
   </button>
-  <!-- <button class="btn-controller" (click)="backToIntroPage()">Exit Game</button> -->
+  <p>
+    <input type="checkbox" [(ngModel)]="onlyMyScores" />
+    Only my scores
+  </p>
 </div>
 <div class="table">
   <table class="table-movement">
@@ -25,15 +28,19 @@
     </tr>
     <tr
       *ngFor="
-        let currUser of allUsers | sortByScores : dirSortScore;
+        let currUserFromServer of dataFromServer
+          | filterByName : filterName : onlyMyScores
+          | sortByHighScores : dirSortScore;
         let i = index
       "
     >
-      <td class="table-movement-td">{{ i + 1 }}</td>
-      <td class="table-movement-td">
-        {{ currUser.userName }}
+      <td *ngIf="i < 10" class="table-movement-td">{{ i + 1 }}</td>
+      <td *ngIf="i < 10" class="table-movement-td">
+        {{ currUserFromServer.name }}
       </td>
-      <td class="table-movement-td">{{ currUser.userPoints }}</td>
+      <td *ngIf="i < 10" class="table-movement-td">
+        {{ currUserFromServer.score }}
+      </td>
     </tr>
   </table>
 </div>

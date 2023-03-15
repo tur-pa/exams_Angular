@@ -13,10 +13,11 @@
       ></app-game-status>
 
       <div class="container-user-results">
-        <app-score-history
+        <app-high-scores [newScore]="newScore"></app-high-scores>
+        <!-- <app-score-history
           [currUser]="currUser"
           [allUsers]="allUsers"
-        ></app-score-history>
+        ></app-score-history> -->
       </div>
     </div>
 

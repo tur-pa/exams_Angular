@@ -1,4 +1,4 @@
-import { SortScoresPipe } from './sortScores.pipe';
+import { SortScoresPipe } from './sort-scores.pipe';
 
 describe('SortScoresPipe', () => {
   it('create an instance', () => {

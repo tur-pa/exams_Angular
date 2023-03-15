@@ -6,17 +6,16 @@ import { Router } from '@angular/router';
 })
 export class GameControlService {
   constructor(private _router: Router) {}
+
   passKey: boolean = false;
 
-  redirectionChecker() {
-    if (this.passKey) {
-      this._router.navigate(['/game']);
-    } else {
-      this._router.navigate(['/intro']);
-    }
+  validationStatus(passKey: boolean) {
+    this.passKey = passKey;
   }
 
-  validPassKey() {
-    this.passKey = true;
+  validationChecker() {
+    if (!this.passKey) {
+      this._router.navigate(['/intro']);
+    }
   }
 }

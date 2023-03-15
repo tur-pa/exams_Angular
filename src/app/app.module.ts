@@ -1,12 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
+import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { NgxSnakeModule } from 'ngx-snake';
 import { IntroPageComponent } from './intro-page/intro-page.component';
 import { GamePageComponent } from './game-page/game-page.component';
-import { SortScoresPipe } from './pipes/sortScores.pipe';
+import { SortScoresPipe } from './pipes/sort-scores.pipe';
 import { SortMovementPipe } from './pipes/sort-movement.pipe';
 import { FilterMovementPipe } from './pipes/filter-movement.pipe';
 import { RouterModule } from '@angular/router';
@@ -15,6 +15,9 @@ import { ControllerComponent } from './controller/controller.component';
 import { GameStatusComponent } from './game-status/game-status.component';
 import { MovementHistoryComponent } from './movement-history/movement-history.component';
 import { ScoreHistoryComponent } from './score-history/score-history.component';
+import { HighScoresComponent } from './high-scores/high-scores.component';
+import { SortByHighScoresPipe } from './pipes/sort-by-high-scores.pipe';
+import { FilterByNamePipe } from './pipes/filter-by-name.pipe';
 
 @NgModule({
   declarations: [
@@ -29,6 +32,9 @@ import { ScoreHistoryComponent } from './score-history/score-history.component';
     GameStatusComponent,
     MovementHistoryComponent,
     ScoreHistoryComponent,
+    HighScoresComponent,
+    SortByHighScoresPipe,
+    FilterByNamePipe,
   ],
   imports: [
     BrowserModule,
@@ -42,7 +48,9 @@ import { ScoreHistoryComponent } from './score-history/score-history.component';
       },
       { path: '**', redirectTo: 'intro' },
     ]),
+    HttpClientModule,
   ],
+
   providers: [],
   bootstrap: [AppComponent],
 })

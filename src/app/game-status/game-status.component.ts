@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { User } from '../modules/user.model';
+import { Router } from '@angular/router';
+import { User } from '../models/user.model';
 
 @Component({
   selector: 'app-game-status',
@@ -11,10 +12,14 @@ export class GameStatusComponent implements OnInit {
   @Input() displayTime: string = '';
   @Input() currUser: User = {
     userName: '',
-    userMail: '',
+    userToken: '',
     userPoints: 0,
   };
-  constructor() {}
+  constructor(private _router: Router) {}
 
   ngOnInit(): void {}
+
+  backToIntroPage(): void {
+    this._router.navigate(['/intro']); // NAVIGATOR
+  }
 }

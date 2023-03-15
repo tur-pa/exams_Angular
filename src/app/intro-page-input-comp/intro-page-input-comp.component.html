@@ -14,17 +14,16 @@
     required
   />
   <p *ngIf="userNameModel.invalid">This field is required!</p>
-  <h3>Player email</h3>
+  <h3>Player token</h3>
   <input
-    pattern="^[a-zA-Z0-9]+@[a-zA-Z0-9]+.[a-zA-Z0-9]+$"
-    type="email"
-    name="userMail"
-    #userMailModel="ngModel"
+    type="text"
+    name="userToken"
+    #userTokenModel="ngModel"
     ngModel
-    placeholder="Input mail"
+    placeholder="Input token"
     required
   />
-  <p *ngIf="userMailModel.invalid">Please enter correct mail</p>
+  <p *ngIf="userTokenModel.invalid">Please enter correct token</p>
   <br />
   <button
     class="start-btn"

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { User } from '../modules/user.model';
+import { User } from '../models/user.model';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 export class ScoreHistoryComponent implements OnInit {
   @Input() currUser: User = {
     userName: '',
-    userMail: '',
+    userToken: '',
     userPoints: 0,
   };
   @Input() allUsers: User[] = [];

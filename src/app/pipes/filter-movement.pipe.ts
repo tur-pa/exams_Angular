@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import * as _ from 'lodash';
-import { movemenetHistory } from '../modules/movemenet-history.module';
+import { movemenetHistory } from '../models/movemenet-history.model';
 
 @Pipe({
   name: 'filterMovement',

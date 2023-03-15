@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { movemenetHistory } from '../modules/movemenet-history.module';
+import { movemenetHistory } from '../models/movemenet-history.model';
 
 @Component({
   selector: 'app-movement-history',
