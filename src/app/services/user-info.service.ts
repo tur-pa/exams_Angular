@@ -9,6 +9,7 @@ export class UserInfoService {
   allUsers: User[] = [];
   idUser: number = -1;
   userName: string = '';
+  tokenValidation: boolean = false;
 
   createPlayer(user: User) {
     this.idUser++;
@@ -26,5 +27,13 @@ export class UserInfoService {
 
   getUsersData() {
     return this.allUsers;
+  }
+
+  getTokenValidFromInput(valid: boolean) {
+    this.tokenValidation = valid;
+  }
+
+  sendTokenValidToGuard() {
+    return this.tokenValidation;
   }
 }

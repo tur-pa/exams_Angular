@@ -23,12 +23,12 @@
 
     <div class="container-game">
       <ngx-snake
+        [ngClass]="{ 'black-and-white': selectedColor === 'contrast-on' }"
         #game
         (foodEaten)="calculatePoints()"
         (gameOver)="endGame()"
       ></ngx-snake>
     </div>
-
     <div>
       <app-controller
         (actionStart)="

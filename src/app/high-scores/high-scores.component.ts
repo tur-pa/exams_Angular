@@ -27,6 +27,7 @@ export class HighScoresComponent implements OnInit {
       .pipe(switchMap(() => this._dataService.getScores()))
       .subscribe((dataFromServer) => {
         this.dataFromServer = dataFromServer;
+        console.log(this.dataFromServer); // CHECKING RESPONSE
       });
     this.filterName = this._userNameData.getUserName(); // GET NAME FROM SERVICE TO FILTER
   }

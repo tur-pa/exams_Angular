@@ -2,7 +2,7 @@ import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
 import { User } from '../models/user.model';
 import { movemenetHistory } from '../models/movemenet-history.model';
 import { NgxSnakeComponent } from 'ngx-snake';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserInfoService } from '../services/user-info.service';
 import { GameControlService } from '../services/game-control.service';
 import { DataService } from '../services/data.service';
@@ -16,16 +16,22 @@ import { Scores } from '../models/scores.model';
 export class GamePageComponent implements OnInit {
   @ViewChild(NgxSnakeComponent)
   public Game!: NgxSnakeComponent;
+  selectedColor: string = '';
 
   constructor(
     private _router: Router,
     private _userInfo: UserInfoService,
-    private _gameControl: GameControlService,
-    private _dataService: DataService
-  ) {}
+    private _gameControl: GameControlService, // ROUTE GUARD OLD VERSION
+    private _dataService: DataService,
+    private _route: ActivatedRoute
+  ) {
+    this._route.params.subscribe((params) => {
+      this.selectedColor = params['selectedColor'];
+    });
+  }
 
   ngOnInit(): void {
-    this._gameControl.validationChecker(); // ROUTE GUARD
+    // this._gameControl.validationChecker(); // ROUTE GUARD OLD VERSION
     this.getCurrUser();
   }
 

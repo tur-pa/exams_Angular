@@ -31,6 +31,13 @@ p {
   text-align: center;
 }
 
+.login-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+}
+
 .center-button {
   display: flex;
   justify-content: center;

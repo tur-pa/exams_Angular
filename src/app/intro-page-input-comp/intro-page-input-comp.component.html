@@ -1,35 +1,47 @@
 <p>
-  <span class="welcome-name" *ngIf="userNameModel.value"
-    >{{ userNameModel.value }} !</span
+  <span class="welcome-name" *ngIf="playerForm.get('userName')?.valid"
+    >{{ playerForm.value.userName }} !</span
   >
 </p>
-<form #userForm="ngForm" (submit)="addPlayer(userForm.form)">
+<form [formGroup]="playerForm" (submit)="addPlayer(playerForm)">
   <h3>Player name</h3>
-  <input
-    type="text"
-    name="userName"
-    #userNameModel="ngModel"
-    ngModel
-    placeholder="Input name"
-    required
-  />
-  <p *ngIf="userNameModel.invalid">This field is required!</p>
+  <input type="text" formControlName="userName" placeholder="Input name" />
+  <p *ngIf="playerForm.get('userName')?.invalid">This field is required!</p>
   <h3>Player token</h3>
-  <input
-    type="text"
-    name="userToken"
-    #userTokenModel="ngModel"
-    ngModel
-    placeholder="Input token"
-    required
-  />
-  <p *ngIf="userTokenModel.invalid">Please enter correct token</p>
-  <br />
+  <input type="text" formControlName="userToken" placeholder="Input token" />
+  <p *ngIf="playerForm.get('userToken')?.invalid">Please enter correct token</p>
+  <div class="display: inline">
+    <mat-slide-toggle
+      [checked]="playerForm.value.templateColor"
+      formControlName="templateColor"
+      [color]="toggleCompColor"
+      ><span
+        [ngStyle]="{
+          color: playerForm.value.templateColor ? 'white' : '#adff2f'
+        }"
+        >Turn</span
+      >
+      on
+      <span
+        [ngStyle]="{
+          color: playerForm.value.templateColor ? 'white' : '#adff2f'
+        }"
+        >contrast</span
+      >
+      mode:
+      <span
+        [ngStyle]="{
+          color: playerForm.value.templateColor ? 'white' : '#adff2f'
+        }"
+        >{{ playerForm.value.templateColor }}</span
+      >
+    </mat-slide-toggle>
+  </div>
   <button
     class="start-btn"
-    [class.start-btn-blue]="userForm.invalid"
-    [class.start-btn-green]="userForm.valid"
-    [disabled]="!userForm.valid"
+    [class.start-btn-blue]="playerForm.invalid"
+    [class.start-btn-green]="playerForm.valid"
+    [disabled]="!playerForm.valid"
   >
     start game
   </button>

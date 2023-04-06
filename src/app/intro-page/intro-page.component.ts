@@ -14,22 +14,35 @@ export class IntroPageComponent implements OnInit {
   constructor(
     private _router: Router,
     private _userInfo: UserInfoService,
-    private _gameControl: GameControlService,
+    private _gameControl: GameControlService, // ROUTE GUARD OLD VERSION
     private _dataService: DataService
   ) {}
 
-  newUserToParent(newUser: User) {
-    this._userInfo.createPlayer(newUser); // SEND USER TO SERVICE
+  templateColor: boolean = false;
 
+  templateColorToParent(templateColor: boolean): void {
+    this.templateColor = templateColor;
+  }
+
+  newUserToParent(newUser: User) {
+    console.log(this._userInfo.allUsers);
     this._dataService
       .authentication(newUser.userToken)
       .subscribe((dataFromServer) => {
-        this._gameControl.validationStatus(dataFromServer.success); // SEND INFORMATION ABOUT VALIDATION TO SERVICE
+        this._userInfo.getTokenValidFromInput(dataFromServer.success);
         if (dataFromServer.success) {
-          this._router.navigate(['/game']); // NAVIGATOR
-        } else {
-          this._router.navigate(['/intro']); // NAVIGATOR
+          this._userInfo.createPlayer(newUser); // SEND USER TO SERVICE
         }
+        // this._gameControl.validationStatus(dataFromServer.success); // SEND INFORMATION ABOUT VALIDATION TO SERVICE OLD VERSION
+        // if (dataFromServer.success) { // ROUTE GUARD OLD VERSION
+        if (this.templateColor === true) {
+          this._router.navigate(['/game', 'contrast-on']); // NAVIGATOR
+        } else {
+          this._router.navigate(['/game', 'contrast-off']); // NAVIGATOR
+        }
+        // } else {
+        //   this._router.navigate(['/intro']); // ROUTE GUARD OLD VERSION
+        // }
       });
   }
 

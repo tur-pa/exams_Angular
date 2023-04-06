@@ -1,8 +1,35 @@
-<p>
-  Have fun
-  <span style="font-weight: bold">{{ currUser.userName }}</span>
-  !
-</p>
+<div class="login-container">
+  <p style="margin-bottom: 0">
+    Have fun
+    <span style="font-weight: bold">{{ currUser.userName }}</span>
+    !
+  </p>
+  <mat-slide-toggle
+    [color]="toggleCompColor"
+    [checked]="toggleCompChecker"
+    (click)="changeColor(templateColor)"
+    ><span
+      [ngStyle]="{
+        color: templateColor ? 'white' : '#adff2f'
+      }"
+      >Turn</span
+    >
+    on
+    <span
+      [ngStyle]="{
+        color: templateColor ? 'white' : '#adff2f'
+      }"
+      >contrast</span
+    >
+    mode:
+    <span
+      [ngStyle]="{
+        color: templateColor ? 'white' : '#adff2f'
+      }"
+      >{{ templateColor }}</span
+    >
+  </mat-slide-toggle>
+</div>
 <div class="container-user-information">
   <p>
     Time in the game:
